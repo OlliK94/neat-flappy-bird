@@ -1,0 +1,24 @@
+{
+  "name": "neat_flappy_bird",
+  "version": "1.0.0",
+  "description": "AI learns to play Flappy Bird by using NEAT",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OlliK94/neat-flappy-bird.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OlliK94/neat-flappy-bird/issues"
+  },
+  "homepage": "https://github.com/OlliK94/neat-flappy-bird#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "mocha": "^5.2.0"
+  }
+}
