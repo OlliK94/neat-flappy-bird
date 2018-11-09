@@ -41,6 +41,19 @@ describe('Bird', function() {
             assert.equal(bird.velocity, -2);
         });
 
+        it('should not decrease velocity below negative maxDiveVelocity', function() {
+            let gravity = 2000;
+            let altitude = 50;
+            let size = 2;
+            let climbVelocity = 10;
+            let maxDiveVelocity = 50;
+            let minAltitude = 0;
+            let maxAltitude = 100;
+            let bird = new Bird(altitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
+            bird.update(gravity);
+            assert.equal(bird.velocity, -maxDiveVelocity);
+        });
+
         it('should change altitude by velocity after it has decreased velocity by gravity', function() {
             let gravity = 2;
             let altitude = 50;

@@ -10,10 +10,23 @@ export class Bird {
     }
 
     climb() {
+        // set velocity to positive climb-velocity
         this.velocity = this.climbVelocity;
     }
 
-    update() {
-        
+    update(gravity) {
+        // decrease velocity
+        this.velocity -= gravity;
+        if (this.velocity < -this.maxDiveVelocity) {
+            this.velocity = -this.maxDiveVelocity;
+        }
+
+        // change altitude
+        this.altitude += this.velocity;
+        if (this.altitude > this.maxAltitude) {
+            this.altitude = this.maxAltitude;
+        } else if (this.altitude < this.minAltitude) {
+            this.altitude = this.minAltitude;
+        }
     }
 }
