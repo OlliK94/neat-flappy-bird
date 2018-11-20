@@ -1,5 +1,6 @@
 export class Bird {
-    constructor(altitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude) {
+    constructor(xPosition, altitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude) {
+        this.xPosition = xPosition;
         this.altitude = altitude;
         this.size = size;
         this.climbVelocity = climbVelocity;
@@ -7,6 +8,7 @@ export class Bird {
         this.minAltitude = minAltitude;
         this.maxAltitude = maxAltitude;
         this.velocity = 0;
+        this.alive = true;
     }
 
     climb() {
