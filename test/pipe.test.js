@@ -1,6 +1,6 @@
 import assert from 'assert';
-import {Pipe} from '../src/pipe.js';
-import {Bird} from '../src/bird.js';
+import Pipe from '../src/pipe';
+import Bird from '../src/bird';
 
 describe('Pipe', function() {
     describe('#update()', function() {
@@ -78,7 +78,7 @@ describe('Pipe', function() {
             assert.equal(pipe.isCollision(bird), false);
         });
 
-        it('should return true if the bird is in the pipe', function() {
+        it('should return true if the bird is within the pipe', function() {
             let xPosition = 105;
             let altitude = 20;
             let size = 10;

@@ -1,4 +1,4 @@
-export class Pipe {
+export default class Pipe {
     constructor(left, top, width, velocity, passageHeight) {
         this.left = left;
         this.top = top;
@@ -6,6 +6,7 @@ export class Pipe {
         // bottom = 0 -> height = top
         this.velocity = velocity;
         this.passageHeight = passageHeight;
+        
         this.passageTop = Math.floor((top-passageHeight)*Math.random()+1) + passageHeight;
     }
 
