@@ -53,7 +53,7 @@ export default class World {
         }
 
         // delete pipes out of world
-        if (this.pipes && this.pipes[0].left + this.pipes[0].width < 0) {
+        if (this.pipes.length > 0 && this.pipes[0].left + this.pipes[0].width < 0) {
             this.pipes.splice(0, 1);
         }
     }
