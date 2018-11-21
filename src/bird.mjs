@@ -26,10 +26,12 @@ export default class Bird {
 
         // change altitude
         this.altitude += this.velocity;
-        if (this.altitude > this.maxAltitude) {
+        if (this.altitude >= this.maxAltitude) {
             this.altitude = this.maxAltitude;
-        } else if (this.altitude < this.minAltitude) {
+            this.alive = false;
+        } else if (this.altitude <= this.minAltitude) {
             this.altitude = this.minAltitude;
+            this.alive = false;
         }
     }
 }

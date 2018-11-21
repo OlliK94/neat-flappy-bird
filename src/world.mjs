@@ -16,7 +16,7 @@ export default class World {
         this.birds = [];
         for (let i = 0; i < populationSize; i++) {
             let b = birdTemplate;
-            this.birds.push(new Bird(b.xPosition, b.altitude, b.size, b.climbVelocity, b.maxDiveVelocity, b.size/2, height-b.size/2));
+            this.birds.push(new Bird(b.xPosition, b.altitude, b.size, b.climbVelocity, b.maxDiveVelocity, 0, height));
         }
 
         // create first pipe
@@ -37,8 +37,8 @@ export default class World {
         }
 
         // check for collision
-        for (let pipe of this.pipes) {
-            for (let bird of this.birds) {
+        for (let bird of this.birds) {
+            for (let pipe of this.pipes) {
                 if (pipe.isCollision(bird)) {
                     bird.alive = false;
                 }

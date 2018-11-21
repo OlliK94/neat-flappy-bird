@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {expect} from 'chai';
 import Bird from '../src/bird.mjs';
 
 // parameters for a standard bird
@@ -14,19 +14,19 @@ const gravity = 2;
 describe('Bird', function() {
     it('should start with velocity 0', function() {
         let bird = new Bird(xPosition, altitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
-        assert.equal(bird.velocity, 0);
+        expect(bird.velocity).to.equal(0);
     });
 
     it('should start alive', function() {
         let bird = new Bird(xPosition, altitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
-        assert.equal(bird.alive, true);
+        expect(bird.alive).to.equal(true);
     });
 
     describe('#climb()', function() {
         it('should set the current velocity to climbVelocity', function() {
             let bird = new Bird(xPosition, altitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
             bird.climb();
-            assert.equal(bird.climbVelocity, climbVelocity);
+            expect(bird.climbVelocity).to.equal(climbVelocity);
         });
     });
 
@@ -34,34 +34,47 @@ describe('Bird', function() {
         it('should decrease velocity by gravity', function() {
             let bird = new Bird(xPosition, altitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
             bird.update(gravity);
-            assert.equal(bird.velocity, -2);
+            expect(bird.velocity).to.equal(-2);
         });
 
         it('should not decrease velocity below negative maxDiveVelocity', function() {
             let bird = new Bird(xPosition, altitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
             bird.velocity = -maxDiveVelocity;
             bird.update(gravity);
-            assert.equal(bird.velocity, -maxDiveVelocity);
+            expect(bird.velocity).to.equal(-maxDiveVelocity);
         });
 
         it('should change altitude by velocity after it has decreased velocity by gravity', function() {
             let bird = new Bird(xPosition, altitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
             bird.update(gravity);
             bird.update(gravity);
-            assert.equal(bird.altitude, 44);
+            expect(bird.altitude).to.equal(44);
         });
 
         it('should not decrease altitude below minAltitude', function() {
             let bird = new Bird(xPosition, minAltitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
             bird.update(gravity);
-            assert.equal(bird.altitude, minAltitude);
+            expect(bird.altitude).to.equal(minAltitude);
         });
 
         it('should not increase altitude above maxAltitude', function() {
             let bird = new Bird(xPosition, maxAltitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
             bird.climb();
             bird.update(gravity);
-            assert.equal(bird.altitude, maxAltitude);
+            expect(bird.altitude).to.equal(maxAltitude);
+        });
+
+        it('should kill the bird if it reaches minAltitude', function() {
+            let bird = new Bird(xPosition, minAltitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
+            bird.update(gravity);
+            expect(bird.alive).to.equal(false);
+        });
+
+        it('should kill the bird if it reaches maxAltitude', function() {
+            let bird = new Bird(xPosition, maxAltitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
+            bird.climb();
+            bird.update(gravity);
+            expect(bird.alive).to.equal(false);
         });
     });
 });

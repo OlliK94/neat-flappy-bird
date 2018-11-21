@@ -1,4 +1,4 @@
-import assert from 'assert';
+import {expect} from 'chai';
 import Pipe from '../src/pipe.mjs';
 import Bird from '../src/bird.mjs';
 
@@ -23,7 +23,7 @@ describe('Pipe', function() {
         it('should increase left by velocity', function() {
             let pipe = new Pipe(left, top, width, velocity, passageHeight);
             pipe.update();
-            assert.equal(pipe.left, left+velocity);
+            expect(pipe.left).to.equal(left+velocity);
         });
     });
 
@@ -31,34 +31,34 @@ describe('Pipe', function() {
         it('should return false if the bird is in front of the pipe', function() {
             let bird = new Bird(xPosition-width, altitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
             let pipe = new Pipe(left, top, width, velocity, passageHeight);
-            assert.equal(pipe.isCollision(bird), false);
+            expect(pipe.isCollision(bird)).to.equal(false);
         });
 
         it('should return false if the bird has passed the pipe', function() {
             let bird = new Bird(xPosition+width, altitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
             let pipe = new Pipe(left, top, width, velocity, passageHeight);
-            assert.equal(pipe.isCollision(bird), false);
+            expect(pipe.isCollision(bird)).to.equal(false);
         });
 
         it('should return false if the bird fits in the passage', function() {
             let bird = new Bird(xPosition, altitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
             let pipe = new Pipe(left, top, width, velocity, passageHeight);
             pipe.passageTop = 60;
-            assert.equal(pipe.isCollision(bird), false);
+            expect(pipe.isCollision(bird)).to.equal(false);
         });
 
         it('should return true if the bird is within the pipe', function() {
             let bird = new Bird(xPosition, maxAltitude, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
             let pipe = new Pipe(left, top, width, velocity, passageHeight);
             pipe.passageTop = 60;
-            assert.equal(pipe.isCollision(bird), true);
+            expect(pipe.isCollision(bird)).to.equal(true);
         });
 
         it('should return true if the bird touches an edge of the pipe', function() {
             let bird = new Bird(left-1, 59, size, climbVelocity, maxDiveVelocity, minAltitude, maxAltitude);
             let pipe = new Pipe(left, top, width, velocity, passageHeight);
             pipe.passageTop = 60;
-            assert.equal(pipe.isCollision(bird), true);
+            expect(pipe.isCollision(bird)).to.equal(true);
         });
     });
 });
