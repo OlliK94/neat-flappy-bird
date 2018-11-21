@@ -1,6 +1,7 @@
 import assert from 'assert';
-import Bird from '../src/bird';
+import Bird from '../src/bird.mjs';
 
+// parameters for a standard bird
 const xPosition = 10;
 const altitude = 50;
 const size = 4;

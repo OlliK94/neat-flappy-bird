@@ -31,6 +31,6 @@ export default class Pipe {
         if (Math.sqrt(Math.pow(bird.xPosition - this.left, 2) + Math.pow(bird.altitude - this.passageTop + this.passageHeight, 2)) < bird.size/2) return true;
         // the distance from the center of the bird to the bottom right corner of the passage is smaller than the birds radius
         if (Math.sqrt(Math.pow(bird.xPosition - this.left - this.width, 2) + Math.pow(bird.altitude - this.passageTop + this.passageHeight, 2)) < bird.size/2) return true;
-        return false;
+        return true;
     }
 }

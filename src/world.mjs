@@ -1,5 +1,5 @@
-import Bird from './bird';
-import Pipe from './pipe';
+import Bird from './bird.mjs';
+import Pipe from './pipe.mjs';
 
 export default class World {
     constructor(width, height, gravity, populationSize, birdTemplate, pipeTemplate) {
@@ -16,7 +16,7 @@ export default class World {
         this.birds = [];
         for (let i = 0; i < populationSize; i++) {
             let b = birdTemplate;
-            this.birds.push(new Bird(b.xPosition, b.altitude, b.size, b.climbVelocity, b.maxDiveVelocity, b.minAltitude, b.maxAltitude));
+            this.birds.push(new Bird(b.xPosition, b.altitude, b.size, b.climbVelocity, b.maxDiveVelocity, b.size/2, height-b.size/2));
         }
 
         // create first pipe

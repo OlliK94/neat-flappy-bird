@@ -1,19 +1,20 @@
 import assert from 'assert';
-import World from '../src/world';
+import World from '../src/world.mjs';
 
+// parameters for a standard world
 const width = 200;
 const height = 100;
 const gravity = 2;
 const populationSize = 2;
+// with a standard bird
 const birdTemplate = {
     "xPosition": 10, 
     "altitude": 50, 
     "size": 4, 
     "climbVelocity": 10, 
-    "maxDiveVelocity": 50, 
-    "minAltitude": 2, 
-    "maxAltitude": 98
+    "maxDiveVelocity": 50
 };
+// and a standard pipe
 const pipeTemplate = {
     "width": 10, 
     "velocity": -2, 
