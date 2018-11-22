@@ -55,6 +55,89 @@ describe('Genome', function() {
             expect(genome.connections).to.have.lengthOf(1);
         });
     });
+
+    describe('#_addNewLayerAfter()', function() {
+        it('should increase the number of layers of the genome by 1', function() {
+            let genome = getFullyUnconnectedGenomeWithThreeNodes();
+            genome._addNewLayerAfter(1);
+            expect(genome.layers).to.equal(4);
+        });
+
+        it('should increase the layer of succeeding nodes by 1', function() {
+            let genome = getFullyUnconnectedGenomeWithThreeNodes();
+            genome._addNewLayerAfter(1);
+            expect(genome.nodes[1].layer).to.equal(3);
+            expect(genome.nodes[2].layer).to.equal(4);
+        });
+
+        it('should not increase the layer of preceding nodes', function() {
+            let genome = getFullyUnconnectedGenomeWithThreeNodes();
+            genome._addNewLayerAfter(2);
+            expect(genome.nodes[0].layer).to.equal(1);
+            expect(genome.nodes[1].layer).to.equal(2);
+        });
+    });
+
+    describe('#addNode()', function() {
+        it('should add a node to the genome', function() {
+            let genome = getFullyConnectedGenomeWithTwoNodes();
+            genome.addNode();
+            expect(genome.nodes).to.have.lengthOf(3);
+        });
+
+        it('should correctly adjust the layer of the nodes', function() {
+            let genome = getFullyConnectedGenomeWithTwoNodes();
+            genome.addNode();
+            expect(genome.nodes[0].layer).to.equal(1);
+            expect(genome.nodes[1].layer).to.equal(3);
+            expect(genome.nodes[2].layer).to.equal(2);
+        });
+
+        it('should increase the number of connections by 1', function() {
+            let genome = getFullyConnectedGenomeWithTwoNodes();
+            genome.addNode();
+            expect(genome.connections).to.have.lengthOf(2);
+        });
+
+        it('should set the weight of the new incoming connection to 1', function() {
+            let genome = getFullyConnectedGenomeWithTwoNodes();
+            genome.addNode();
+            let incomingConnection;
+            for (let connection of genome.connections) {
+                if (connection.inputNode === genome.nodes[0]) {
+                    incomingConnection = connection;
+                    break;
+                }
+            }
+            expect(incomingConnection.weight).to.equal(1);
+        });
+
+        it('should set the weight of the new outgoing connection to the weight of the old connection', function() {
+            let genome = getFullyConnectedGenomeWithTwoNodes();
+            genome.connections[0].weight = 0.123;
+            genome.addNode();
+            let outgoingConnection;
+            for (let connection of genome.connections) {
+                if (connection.outputNode === genome.nodes[1]) {
+                    outgoingConnection = connection;
+                    break;
+                }
+            }
+            expect(outgoingConnection.weight).to.equal(0.123);
+        });
+
+        it('should not add a node if there exist no connections', function() {
+            let genome = getFullyUnconnectedGenomeWithThreeNodes();
+            genome.addNode();
+            expect(genome.nodes).to.have.lengthOf(3);
+        });
+
+        it('should not add connections if there exist no connections', function() {
+            let genome = getFullyUnconnectedGenomeWithThreeNodes();
+            genome.addNode();
+            expect(genome.connections).to.have.lengthOf(0);
+        });
+    });
 });
 
 function getFullyConnectedGenomeWithTwoNodes() {
