@@ -1,4 +1,4 @@
-import World from '/src/world.mjs';
+import World from './world.mjs';
 
 const fpsLock = 30;
 

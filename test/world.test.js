@@ -42,7 +42,7 @@ describe('World', function() {
     });
 
     describe('#update()', function() {
-        it('should increase updateCounter by one', function() {
+        it('should increase updateCounter by 1', function() {
             let world = new World(width, height, gravity, populationSize, birdTemplate, pipeTemplate);
             world.update();
             expect(world.updateCounter).to.equal(1);

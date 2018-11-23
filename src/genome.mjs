@@ -2,34 +2,46 @@ import Connection from './connection.mjs';
 import Node from './node.mjs';
 
 export default class Genome {
-    constructor(inputs, outputs) {
+    constructor(inputs, outputs, history) {
         this.inputs = inputs;
         this.outputs = outputs;
+        this.history = history;
 
         this.layers = 2;
-
         this.connections = [];
         this.nodes = [];
+
+        for (let i = 0; i < inputs; i++) {
+            this.nodes.push(new Node(Node.Type.INPUT, 1, i+1));
+        }
+        for (let i = 0; i < outputs; i++) {
+            this.nodes.push(new Node(Node.Type.OUTPUT, 2, inputs+i+1));
+        }
     }
 
     addConnection() {
         // get unconnected pairs
         let pairs = this._getUnconnectedNodePairs();
+
         // make sure the network is not already fully connected
-        if (pairs.length > 0) {
-            // choose a random pair
-            let index = Math.floor(pairs.length * Math.random());
-            let pair = pairs[index];
-            // generate a random weight between -1 and 1
-            let weight = 2 * Math.random() - 1; // exlusive 1
-            weight = weight >= 0 ? 1 - weight : weight; // this should include 1 (and exclude 0 as a nice side effect)
-            // connect the chosen pair
-            if (pair[0].layer < pair[1].layer) {
-                this.connections.push(new Connection(pair[0], pair[1], weight));
-            }
-            else {
-                this.connections.push(new Connection(pair[1], pair[0], weight));
-            }
+        if (pairs.length === 0) return;
+
+        // choose a random pair
+        let index = Math.floor(pairs.length * Math.random());
+        let pair = pairs[index];
+
+        // generate a random weight between -1 and 1
+        let weight = 2 * Math.random() - 1; // exlusive 1
+        weight = weight >= 0 ? 1 - weight : weight; // this should include 1 (and exclude 0 as a nice side effect)
+        
+        // connect the chosen pair
+        if (pair[0].layer < pair[1].layer) {
+            let innovationNumber = this.history.getInnovationNumberForConnection(pair[0], pair[1]);
+            this.connections.push(new Connection(pair[0], pair[1], weight, innovationNumber));
+        }
+        else {
+            let innovationNumber = this.history.getInnovationNumberForConnection(pair[1], pair[0]);
+            this.connections.push(new Connection(pair[1], pair[0], weight, innovationNumber));
         }
     }
 
@@ -41,8 +53,8 @@ export default class Genome {
         let index = Math.floor(this.connections.length * Math.random());
         let oldConnection = this.connections[index];
 
-        // remove the chosen connection
-        this.connections.splice(index, 1);
+        // disable the chosen connection
+        oldConnection.enabled = false;
 
         // get the participating nodes
         let predecessorNode = oldConnection.inputNode;
@@ -56,15 +68,18 @@ export default class Genome {
         let layer = predecessorNode.layer + 1;
 
         // create the new node
-        let newNode = new Node(Node.Type.HIDDEN, layer);
+        let nodeInnovationNumber = this.history.getInnovationNumberForNode(oldConnection);
+        let newNode = new Node(Node.Type.HIDDEN, layer, nodeInnovationNumber);
         this.nodes.push(newNode);
 
         // create a new connection between the predecessor and the new node and give it the weight 1
-        let predecessorConnection = new Connection(predecessorNode, newNode, 1);
+        let connectionInnovationNumber1 = this.history.getInnovationNumberForConnection(predecessorNode, newNode);
+        let predecessorConnection = new Connection(predecessorNode, newNode, 1, connectionInnovationNumber1);
         this.connections.push(predecessorConnection);
 
         // create a new connection between the successor and the new node and give it the weight of the old connection
-        let successorConnection = new Connection(newNode, successorNode, oldConnection.weight);
+        let connectionInnovationNumber2 = this.history.getInnovationNumberForConnection(newNode, successorNode);
+        let successorConnection = new Connection(newNode, successorNode, oldConnection.weight, connectionInnovationNumber2);
         this.connections.push(successorConnection);
     }
 

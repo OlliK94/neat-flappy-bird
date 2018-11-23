@@ -2,8 +2,23 @@ import {expect} from 'chai';
 import Genome from '../src/genome.mjs';
 import Connection from '../src/connection.mjs';
 import Node from '../src/node.mjs';
+import History from '../src/history.mjs';
 
 describe('Genome', function() {
+    it('should start with two layers', function() {
+        let history = new History(2);
+        let genome = new Genome(1, 1, history);
+        expect(genome.layers).to.equal(2);
+    });
+
+    it('should start with the correct number of input and output nodes', function() {
+        let history = new History(2);
+        let genome = new Genome(1, 1, history);
+        expect(genome.nodes).to.have.lengthOf(2);
+        expect(genome.nodes[0].type).to.equal(Node.Type.INPUT);
+        expect(genome.nodes[1].type).to.equal(Node.Type.OUTPUT);
+    });
+
     describe('#_connectionExists()', function() {
         it('should return true if node1 is the inputNode and node2 is the outputNode', function() {
             let genome = getFullyConnectedGenomeWithTwoNodes();
@@ -93,10 +108,16 @@ describe('Genome', function() {
             expect(genome.nodes[2].layer).to.equal(2);
         });
 
-        it('should increase the number of connections by 1', function() {
+        it('should increase the number of connections by 2', function() {
             let genome = getFullyConnectedGenomeWithTwoNodes();
             genome.addNode();
-            expect(genome.connections).to.have.lengthOf(2);
+            expect(genome.connections).to.have.lengthOf(3);
+        });
+
+        it('should disable the old connection', function() {
+            let genome = getFullyConnectedGenomeWithTwoNodes();
+            genome.addNode();
+            expect(genome.connections[0].enabled).to.equal(false);
         });
 
         it('should set the weight of the new incoming connection to 1', function() {
@@ -143,8 +164,9 @@ describe('Genome', function() {
 function getFullyConnectedGenomeWithTwoNodes() {
     let node1 = new Node(Node.Type.INPUT, 1, 1);
     let node2 = new Node(Node.Type.OUTPUT, 2, 2);
-    let connection = new Connection(node1, node2);
-    let genome = new Genome(1, 1);
+    let connection = new Connection(node1, node2, 1, 3);
+    let history = new History(0);
+    let genome = new Genome(1, 1, history);
     genome.layers = 2;
     genome.nodes = [];
     genome.connection = [];
@@ -158,7 +180,8 @@ function getFullyUnconnectedGenomeWithThreeNodes() {
     let node1 = new Node(Node.Type.INPUT, 1, 1);
     let node2 = new Node(Node.Type.HIDDEN, 2, 2);
     let node3 = new Node(Node.Type.OUTPUT, 3, 3);
-    let genome = new Genome(1, 1);
+    let history = new History(0);
+    let genome = new Genome(1, 1, history);
     genome.layers = 3;
     genome.nodes = [];
     genome.connection = [];
@@ -173,7 +196,8 @@ function getFullyUnconnectedGenomeWithFourNodes() {
     let node2 = new Node(Node.Type.HIDDEN, 2, 2);
     let node3 = new Node(Node.Type.HIDDEN, 2, 3);
     let node4 = new Node(Node.Type.OUTPUT, 3, 4);
-    let genome = new Genome(1, 1);
+    let history = new History(0);
+    let genome = new Genome(1, 1, history);
     genome.layers = 3;
     genome.nodes = [];
     genome.connection = [];

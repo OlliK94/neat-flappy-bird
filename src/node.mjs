@@ -7,9 +7,9 @@ export default class Node {
         };
     }
 
-    constructor(type, layer, id) {
+    constructor(type, layer, innovationNumber) {
         this.type = type;
         this.layer = layer;
-        this.id = id;
+        this.innovationNumber = innovationNumber;
     }
 }
