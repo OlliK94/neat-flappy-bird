@@ -11,11 +11,17 @@ export default class Genome {
         this.connections = [];
         this.nodes = [];
 
+        // create the input and output nodes
         for (let i = 0; i < inputs; i++) {
             this.nodes.push(new Node(Node.Type.INPUT, 1, i+1));
         }
         for (let i = 0; i < outputs; i++) {
             this.nodes.push(new Node(Node.Type.OUTPUT, 2, inputs+i+1));
+        }
+
+        // connect each input node to each output node
+        for (let i = 0; i < inputs*outputs; i++) {
+            this.addConnection();
         }
     }
 
@@ -46,15 +52,15 @@ export default class Genome {
     }
 
     addNode() {
-        // do nothing if there are no connections
+        // can not add a node if there are no connections
         if (this.connections.length === 0) return;
 
         // choose a random connection
         let index = Math.floor(this.connections.length * Math.random());
         let oldConnection = this.connections[index];
 
-        // disable the chosen connection
-        oldConnection.enabled = false;
+        // remove the chosen connection
+        this.connections.splice(index, 1);
 
         // get the participating nodes
         let predecessorNode = oldConnection.inputNode;

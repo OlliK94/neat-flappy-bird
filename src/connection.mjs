@@ -4,7 +4,5 @@ export default class Connection {
         this.outputNode = outputNode;
         this.weight = weight;
         this.innovationNumber = innovationNumber;
-
-        this.enabled = true;
     }
 }

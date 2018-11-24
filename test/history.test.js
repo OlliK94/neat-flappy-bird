@@ -4,9 +4,14 @@ import Connection from '../src/connection.mjs';
 import Node from '../src/node.mjs';
 
 describe('History', function() {
+    it('should start with an innovation count of the sum of the number of inputs and outputs', function() {
+        let history = new History(3, 2);
+        expect(history.innovationCount).to.equal(5);
+    })
+
     describe('#getInnovationNumberForNode()', function() {
         it('should increase the innovation count by 1 if the innovation is new', function() {
-            let history = new History(0);
+            let history = new History(0, 0);
             let input = new Node(Node.Type.INPUT, 1, 1);
             let output = new Node(Node.Type.OUTPUT, 2, 2);
             let connection = new Connection(input, output, 1, 3);
@@ -15,7 +20,7 @@ describe('History', function() {
         });
 
         it('should add a new nodeInnovation to the history if the innovation is new', function() {
-            let history = new History(0);
+            let history = new History(0, 0);
             let input = new Node(Node.Type.INPUT, 1, 1);
             let output = new Node(Node.Type.OUTPUT, 2, 2);
             let connection = new Connection(input, output, 1, 3);
@@ -24,7 +29,7 @@ describe('History', function() {
         });
 
         it('should return the correct innovationNumber for a new innovation', function() {
-            let history = new History(0);
+            let history = new History(0, 0);
             let input = new Node(Node.Type.INPUT, 1, 1);
             let output = new Node(Node.Type.OUTPUT, 2, 2);
             let connection = new Connection(input, output, 1, 3);
@@ -33,7 +38,7 @@ describe('History', function() {
         });
 
         it('should not increase the innovation count if the innovation already exists', function() {
-            let history = new History(0);
+            let history = new History(0, 0);
             let input = new Node(Node.Type.INPUT, 1, 1);
             let output = new Node(Node.Type.OUTPUT, 2, 2);
             let connection = new Connection(input, output, 1, 3);
@@ -43,7 +48,7 @@ describe('History', function() {
         });
 
         it('should not add a new nodeInnovation to the history if the innovation already exists', function() {
-            let history = new History(0);
+            let history = new History(0, 0);
             let input = new Node(Node.Type.INPUT, 1, 1);
             let output = new Node(Node.Type.OUTPUT, 2, 2);
             let connection = new Connection(input, output, 1, 3);
@@ -53,7 +58,7 @@ describe('History', function() {
         });
 
         it('should return the correct innovationNumber for an existing innovation', function() {
-            let history = new History(0);
+            let history = new History(0, 0);
             let input = new Node(Node.Type.INPUT, 1, 1);
             let output = new Node(Node.Type.OUTPUT, 2, 2);
             let connection = new Connection(input, output, 1, 3);
@@ -65,7 +70,7 @@ describe('History', function() {
 
     describe('#getInnovationNumberForConnection()', function() {
         it('should increase the innovation count by 1 if the innovation is new', function() {
-            let history = new History(0);
+            let history = new History(0, 0);
             let input = new Node(Node.Type.INPUT, 1, 1);
             let output = new Node(Node.Type.OUTPUT, 2, 2);
             history.getInnovationNumberForConnection(input, output);
@@ -73,7 +78,7 @@ describe('History', function() {
         });
 
         it('should add a new connectionInnovation to the history if the innovation is new', function() {
-            let history = new History(0);
+            let history = new History(0, 0);
             let input = new Node(Node.Type.INPUT, 1, 1);
             let output = new Node(Node.Type.OUTPUT, 2, 2);
             history.getInnovationNumberForConnection(input, output);
@@ -81,7 +86,7 @@ describe('History', function() {
         });
 
         it('should return the correct innovationNumber for a new innovation', function() {
-            let history = new History(0);
+            let history = new History(0, 0);
             let input = new Node(Node.Type.INPUT, 1, 1);
             let output = new Node(Node.Type.OUTPUT, 2, 2);
             let innovationNumber = history.getInnovationNumberForConnection(input, output);
@@ -89,7 +94,7 @@ describe('History', function() {
         });
 
         it('should not increase the innovation count if the innovation already exists', function() {
-            let history = new History(0);
+            let history = new History(0, 0);
             let input = new Node(Node.Type.INPUT, 1, 1);
             let output = new Node(Node.Type.OUTPUT, 2, 2);
             history.getInnovationNumberForConnection(input, output);
@@ -98,7 +103,7 @@ describe('History', function() {
         });
 
         it('should not add a new connectionInnovation to the history if the innovation already exists', function() {
-            let history = new History(0);
+            let history = new History(0, 0);
             let input = new Node(Node.Type.INPUT, 1, 1);
             let output = new Node(Node.Type.OUTPUT, 2, 2);
             history.getInnovationNumberForConnection(input, output);
@@ -107,7 +112,7 @@ describe('History', function() {
         });
 
         it('should return the correct innovationNumber for an existing innovation', function() {
-            let history = new History(0);
+            let history = new History(0, 0);
             let input = new Node(Node.Type.INPUT, 1, 1);
             let output = new Node(Node.Type.OUTPUT, 2, 2);
             innovationNumber = history.getInnovationNumberForConnection(input, output);

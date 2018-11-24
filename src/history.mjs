@@ -1,6 +1,6 @@
 export default class History {
-    constructor(innovationCount) {
-        this.innovationCount = innovationCount;
+    constructor(inputs, outputs) {
+        this.innovationCount = inputs + outputs;
         this.connectionInnovations = [];
         this.nodeInnovations = [];
     }
