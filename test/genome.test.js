@@ -1,6 +1,5 @@
 import {expect} from 'chai';
 import Genome from '../src/genome.mjs';
-import Connection from '../src/connection.mjs';
 import Node from '../src/node.mjs';
 import History from '../src/history.mjs';
 
